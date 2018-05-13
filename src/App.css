@@ -14,22 +14,29 @@
 
 .songCounterContent {
   display: inline-block;
+  margin-right: 10%;
 }
 
 .playlistCounterContent {
   display: inline-block;
-  margin-right: 5%;
+  margin-right: 10%;
 }
 
 .App {
   text-align: center;
   background-color: rgb(238, 248, 255);
-  height: 1000px;;
+  height: 1000px;
+  margin: 1%;
 }
 
 .playlist {
   display: inline-block;
   margin: 3%;
   padding: 1%;
-  border: 2px solid black;
+  border: 5px solid black;
+  text-align: left;
+}
+
+.filterContent {
+  display: inline-block;
 }
