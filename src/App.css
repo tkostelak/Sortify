@@ -1,0 +1,33 @@
+.appHeader {
+  background-color:#00cc99;
+  height: 7%;
+  padding: 5%;
+  color: black;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.aggregate {
+  display: inline-block;
+  width: 40%;
+}
+
+.App {
+  text-align: center;
+  background-color: rgb(238, 248, 255);
+  height: 1000px;;
+}
+
+.playlist {
+  margin-top: 2%;
+  display: inline-block;
+  padding: 3%;
+  border: 2px solid black;
+
+}
