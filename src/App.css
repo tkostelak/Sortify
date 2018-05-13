@@ -12,13 +12,11 @@
   font-size: large;
 }
 
-.songCount {
+.songCounterContent {
   display: inline-block;
-  padding: 2%;
-  margin-left: 5%;
 }
 
-.playlistCount {
+.playlistCounterContent {
   display: inline-block;
   margin-right: 5%;
 }

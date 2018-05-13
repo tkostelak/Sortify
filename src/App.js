@@ -6,39 +6,56 @@ let fakeUserData = {
     name: 'Tyler K.',
     playlists: [
       {name: 'Groovy Stuff',
-        tracks: ['groove to dis',
-          'always groovin',
-          'never stop Groovin']},
+        tracks: [
+          {name:'groove to dis'},
+          {name:'always groovin'},
+          {name:'never stop Groovin'}
+        ]
+      },
       {name: 'Nice Jams',
-        tracks: ['synthy business',
-        'lush piano',
-        'airy chords']},
+        tracks: [
+          {name:'synthy business'},
+          {name: 'lush piano'},
+          {name: 'airy chords'}
+        ]
+      },
       {name: 'rappin captain',
-        tracks: ['its a rap thing',
-          'always gonna rap',
-          'rappin like a captain'
-      ]},
+        tracks: [
+          {name:'its a rap thing'},
+          {name:'always gonna rap'},
+          {name:'rappin like a captain'}
+        ]
+      },
       {name: 'the best playlist',
-        tracks: ['the best around',
-        'dont stop thinking about tomorrow',
-        'oh boy',
-        'oh baby']}
+        tracks: [
+          {name:'the best around'},
+          {name:'dont stop thinking about tomorrow'},
+          {name:'oh boy'}
+        ]
+      }
     ]
   }
 }
 
-class ControlPanel extends Component {
+class PlaylistCounter extends Component {
   render () {
     return (
-      <div className='controlPanel'>
-        <div className='playlistCount'>
-          <h3>Number of playlists: {this.props.playlists &&
-            this.props.playlists.length}</h3>
-        </div>  
-        <div className = 'songCount'>
-          <h3>Number of songs: </h3>
-        </div>
+      <div className='playlistCounterContent'>
+        <h3>Number of playlists: {
+          this.props.playlists.length}</h3> 
       </div>
+    );
+  }
+}
+class SongCounter extends Component {
+  render() {
+    let allTracks = this.props.playlists.reduce((tracks, eachPlaylist) => {
+      return tracks.concat(eachPlaylist.tracks)
+    }, [])
+  return (
+    <div className = 'songCounterContent'>
+      <h3>Total Tracks:{allTracks.length}</h3>
+    </div>
     );
   }
 }
@@ -90,20 +107,16 @@ class App extends Component {
           <h2> Hello,  {this.state.serverData.user.name}
           </h2>
           </header>
-          <ControlPanel playlists={
+          <PlaylistCounter playlists={
             this.state.serverData.user.playlists }/>   
+          <SongCounter playlists={
+            this.state.serverData.user.playlists }/>
           <Filter/>
           <Playlist/>
           <Playlist/>
           <Playlist/>
           <Playlist/>
-          <Playlist/>
-          <Playlist/>
-          <Playlist/>
-          <Playlist/>
-          <Playlist/>
-          <Playlist/>
-        </div>: 'Loading'
+        </div>: <h3>Loading your content!</h3> 
         }
       </div>
     );
