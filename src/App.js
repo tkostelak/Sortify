@@ -3,7 +3,7 @@ import './App.css'
 
 let fakeUserData = {
   user: {
-    name: 'Tyler K',
+    name: 'Tyler K.',
     playlists: [
       {name: 'Groovy Stuff',
         tracks: ['groove to dis',
@@ -27,12 +27,17 @@ let fakeUserData = {
   }
 }
 
-class Aggregate extends Component {
+class ControlPanel extends Component {
   render () {
     return (
-      <div className='aggregate'>
-        <h2>Number of playlists: {this.props.playlists &&
-          this.props.playlists.length}</h2>
+      <div className='controlPanel'>
+        <div className='playlistCount'>
+          <h3>Number of playlists: {this.props.playlists &&
+            this.props.playlists.length}</h3>
+        </div>  
+        <div className = 'songCount'>
+          <h3>Number of songs: </h3>
+        </div>
       </div>
     );
   }
@@ -78,24 +83,28 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className='appHeader'>
-        <h1> Sortify </h1>
-          <h2> Hello,  {this.state.serverData.user && this.state.serverData.user.name}
+        {this.state.serverData.user ?
+        <div>
+          <header className='appHeader'>
+          <h1> Sortify </h1>
+          <h2> Hello,  {this.state.serverData.user.name}
           </h2>
-        </header>
-        <Aggregate playlists={this.state.serverData.user &&
-          this.state.serverData.user.playlists }/>
-        <Filter/>
-        <Playlist/>
-        <Playlist/>
-        <Playlist/>
-        <Playlist/>
-        <Playlist />
-        <Playlist />
-        <Playlist />
-        <Playlist />
-        <Playlist />
-        <Playlist />
+          </header>
+          <ControlPanel playlists={
+            this.state.serverData.user.playlists }/>   
+          <Filter/>
+          <Playlist/>
+          <Playlist/>
+          <Playlist/>
+          <Playlist/>
+          <Playlist/>
+          <Playlist/>
+          <Playlist/>
+          <Playlist/>
+          <Playlist/>
+          <Playlist/>
+        </div>: 'Loading'
+        }
       </div>
     );
   }
