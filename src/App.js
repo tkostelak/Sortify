@@ -29,7 +29,7 @@ let fakeUserData = {
       {name: 'the best playlist',
         tracks: [
           {name:'the best around'},
-          {name:'dont stop thinking about tomorrow'},
+          {name:'dont stop'},
           {name:'oh boy'}
         ]
       }
@@ -76,11 +76,11 @@ class Playlist extends Component {
   render() {
     return (
       <div className ='playlist'>
-        <h3> Playlist Name </h3>
+        <h3> {this.props.playlist.name} </h3>
         <ul>
-          <li>Song 1</li>
-          <li>Song 2</li>
-          <li>Song 3</li>
+          {this.props.playlist.tracks.map(track =>
+            <li>{track.name}</li>
+          )}
         </ul>
       </div>
     );
@@ -103,19 +103,18 @@ class App extends Component {
         {this.state.serverData.user ?
         <div>
           <header className='appHeader'>
-          <h1> Sortify </h1>
-          <h2> Hello,  {this.state.serverData.user.name}
-          </h2>
+            <h1> Sortify </h1>
+            <h2> Hello,  {this.state.serverData.user.name}
+            </h2>
           </header>
           <PlaylistCounter playlists={
             this.state.serverData.user.playlists }/>   
           <SongCounter playlists={
             this.state.serverData.user.playlists }/>
           <Filter/>
-          <Playlist/>
-          <Playlist/>
-          <Playlist/>
-          <Playlist/>
+          {this.state.serverData.user.playlists.map(playlist => 
+            <Playlist playlist={playlist}/>
+          )}
         </div>: <h3>Loading your content!</h3> 
         }
       </div>
