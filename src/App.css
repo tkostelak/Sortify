@@ -1,11 +1,13 @@
 .appHeader {
-  background-color:#00cc99;
-  padding: 2%;
-  color: black;
-}
+  height: 50vh;
+  background-image: linear-gradient(to right bottom,
+    rgba(0, 204, 153, 0.849),
+    rgba(0, 204, 153, 0.822)),
+     url(./assets/img/turntable.jpeg);
+  background-size: cover;
+  background-position: top;
+  clip-path: polygon(0 0, 100% 0, 100% 30vh, 0 100%);
 
-.App-title {
-  font-size: 1.5em;
 }
 
 .App-intro {

@@ -2,61 +2,25 @@ import React, { Component } from 'react';
 import './App.css'
 import queryString from 'query-string';
 
-
-let fakeUserData = {
-  user: {
-    name: 'Tyler K.',
-    playlists: [
-      {name: 'Groovy Stuff',
-        tracks: [
-          {name:'groove to dis'},
-          {name:'always groovin'},
-          {name:'never stop Groovin'}
-        ]
-      },
-      {name: 'Nice Jams',
-        tracks: [
-          {name:'synthy business'},
-          {name: 'lush piano'},
-          {name: 'airy chords'}
-        ]
-      },
-      {name: 'rappin captain',
-        tracks: [
-          {name:'its a rap thing'},
-          {name:'always gonna rap'},
-          {name:'rappin like a captain'}
-        ]
-      },
-      {name: 'the best playlist',
-        tracks: [
-          {name:'the best around'},
-          {name:'dont stop'},
-          {name:'oh boy'}
-        ]
-      }
-    ]
-  }
-}
-
 class PlaylistCounter extends Component {
   render () {
+    console.log(this.props.playlist.songs)
     return (
       <div className='playlistCounterContent'>
-        <h3>Number of playlists: {
+        <h3 style={{fontFamily: 'Oswald', fontSize:'2em'}}>Number of playlists: {
           this.props.playlist.length}</h3> 
       </div>
     );
   }
 }
+
 class SongCounter extends Component {
   render() {
-    let allTracks = this.props.playlist.reduce((tracks, eachPlaylist) => {
-      return tracks.concat(eachPlaylist.tracks)
-    }, [])
+  let playlist = this.props.playlist;
+  let tracks = [];  
   return (
     <div className = 'songCounterContent'>
-      <h3>Total Tracks:{allTracks.length}</h3>
+      <h3 style={{fontFamily: 'Oswald', fontSize:'2em'}}>Total Tracks:{}</h3>
     </div>
     );
   }
@@ -69,7 +33,7 @@ class Filter extends Component {
         <img/>
         <input type='text' onKeyUp={
           event => this.props.onTextChange(event.target.value)}/>
-        Filter
+          Filter
       </div>
     )
   }
@@ -166,15 +130,14 @@ class App extends Component {
         .filter(playlist =>
           playlist.name.toLowerCase().includes(
             this.state.filterString.toLowerCase()))
-        : []
-    
+        : []   
       return (
       <div className="App">
         {this.state.user ?
         <div>
           <header className='appHeader'>
-            <h1> Sortify </h1>
-            <h2> Welcome, 
+            <h1 style={{fontSize: '9vw', fontFamily: 'Lobster Two'}}> Sortify </h1>
+            <h2 style={{fontSize: '5vw', fontFamily:'Oswald'}}> Welcome, 
               <br/>
               {this.state.user.name}
             </h2>
