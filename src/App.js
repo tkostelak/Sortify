@@ -80,6 +80,7 @@ class Playlist extends Component {
     let playlist = this.props.playlist;
     return (
       <div className ='playlist'>
+        <img src={playlist.imageUrl}/>
         <h3 style={{textAlign: 'center'}}> {playlist.name}</h3>
         <ul>
           {playlist.songs.map(track =>
@@ -101,44 +102,67 @@ class App extends Component {
   }
   
   componentDidMount(){
+   //AUTHORIZE USER API CALL!!!
     let parsed = queryString.parse(
       window.location.search);
     let accessToken = parsed.access_token;
-    
-    fetch('https://api.spotify.com/v1/me', {headers: {
-      'Authorization': 'Bearer ' + accessToken}
-    }).then(response => response.json())
-    .then(data => {
-      const displayName = data.display_name || data.id
-      this.setState({
-      serverData: {
-        user: {
-          name: displayName
-        }}
-      })
-    })
-
-  fetch('https://api.spotify.com/v1/me/playlists', { headers: {
-    'Authorization': 'Bearer ' + accessToken}
-    }).then(response => response.json())
-  .then(data => {
-    this.setState({
-      serverData: { 
-        user: { 
-          playlists: data.items.map(item => ({
-            name: item.name, 
-            songs: [] 
-          }))
-        }
+    if (!accessToken)
+      return;
+    fetch('https://api.spotify.com/v1/me', {
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
       }
-    })})
-  }
+    }).then(response => response.json())
+      .then(data => this.setState({ 
+        user: {
+          name: data.display_name || data.id
+        }
+    }))
 
+    //RETRIEVE PLAYLIST INFO API CALL!!!
+    fetch('https://api.spotify.com/v1/me/playlists', {
+      headers: {'Authorization': 'Bearer ' + accessToken }
+    }).then(response => response.json())
+      .then(playlistData => {
+        let playlists = playlistData.items
+        let trackDataPromises = playlistData.items.map(playlist => {
+          let responsePromise =
+            fetch(playlist.tracks.href, {
+              headers: {'Authorization': 'Bearer ' + accessToken }})
+            let trackDataPromise = responsePromise
+              .then(response => response.json())
+            return trackDataPromise
+          })
+        let allTrackDataPromises =
+          Promise.all(trackDataPromises)
+          let playlistPromise = allTrackDataPromises.then(      trackData => {
+          trackData.forEach((trackData, i) => {
+            playlists[i].trackData = trackData.items.map(item =>
+              item.track)
+          })
+        return playlists
+        })
+      return playlistPromise
+      })
+      .then(playlists => this.setState({
+        playlists: playlists.map(item => {
+          console.log(item.trackData)
+          return {
+            name: item.name,
+            imageUrl: item.images[0].url,
+            songs: item.trackData.slice(0,5).map(trackData => ({
+              name: trackData.name
+            }))
+          }
+        })
+      }))
+    }
+  
   render() {
     let playlistToRender = 
-      this.state.serverData.user &&
-      this.state.serverData.user.playlists 
-        ? this.state.serverData.user.playlists
+      this.state.user &&
+      this.state.playlists 
+        ? this.state.playlists
         .filter(playlist =>
           playlist.name.toLowerCase().includes(
             this.state.filterString.toLowerCase()))
@@ -146,13 +170,13 @@ class App extends Component {
     
       return (
       <div className="App">
-        {this.state.serverData.user ?
+        {this.state.user ?
         <div>
           <header className='appHeader'>
             <h1> Sortify </h1>
             <h2> Welcome, 
               <br/>
-              {this.state.serverData.user.name}
+              {this.state.user.name}
             </h2>
           </header>
           <PlaylistCounter playlist={playlistToRender}/>
